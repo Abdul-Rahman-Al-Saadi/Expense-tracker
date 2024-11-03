@@ -1,0 +1,6 @@
+Create an expense tracker website:
+- User can create, view, edit and delete transactions
+- Track both incomes and expenses
+- User should be able to reload or visit the website later without losing data
+- User can view total budget
+- User can filter according to min or max price, type (income/expense), date and notes
