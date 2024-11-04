@@ -1,4 +1,3 @@
-
 const openForm = document.getElementById('openForm');
 openForm.addEventListener('click', () => {
     document.getElementById('popupForm').style.display = 'flex';
@@ -44,8 +43,6 @@ submit.addEventListener('submit', (event) => {
 
     document.getElementById('transactionForm').reset();
     document.getElementById('popupForm').style.display = 'none';
-
-    console.log('Transaction added:', transaction);
     populateTable();
 });
 
@@ -120,7 +117,6 @@ function populateTotals(){
             totalIncome += parseInt(item.amount);
         }
     });
-    console.log(totalExpenses);
     document.getElementById('total-expense').innerText = totalExpenses;
     document.getElementById('total-income').innerText = totalIncome;
     document.getElementById('total-balance').innerText = totalIncome - totalExpenses;
@@ -138,7 +134,6 @@ document.getElementById('tableBody').addEventListener('click', (event) => {
 
 const sortNote = () => {
     const transactions = JSON.parse(localStorage.getItem('transactions'));
-    console.log(transactions[0].note);
     if(hasBeenPressedNote) {
         hasBeenPressedNote = false;
         transactions.sort(((a, b) => (a.note > b.note ? 1 : -1)));
@@ -191,10 +186,6 @@ document.getElementById('sort-note').addEventListener('click', sortNote);
 document.getElementById('sort-date').addEventListener('click', sortDate);
 document.getElementById('sort-amount').addEventListener('click', sortAmount);
 document.getElementById('typeFilter').addEventListener('change', filterType);
-
-// const isSortDatePressed = document.getElementById('sort-date').addEventListener('click', sortDate);
-// const isSortAmountPressed = document.getElementById('sort-amount').addEventListener('click', sortDate);
-// const isSortTypePressed = document.getElementById('sort-type').addEventListener('click', sortDate);
 
 populateTotals()
 populateTable();
