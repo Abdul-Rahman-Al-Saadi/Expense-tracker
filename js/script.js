@@ -53,9 +53,14 @@ function populateTable() {
     const tableBody = document.getElementById('tableBody');
     const transactions = JSON.parse(localStorage.getItem('transactions')) || [];
 
+    let filteredTransactions = transactions;
+    if(currentTypeFilter != ''){
+        filteredTransactions = transactions.filter(transaction => transaction.type == currentTypeFilter);
+    }
+    
     tableBody.innerHTML = ''; 
 
-    transactions.forEach((transaction, index) => {
+    filteredTransactions.forEach((transaction, index) => {
         const row = document.createElement('tr');
         if(transaction.type == 'income'){
             row.classList = 'income-row';
@@ -134,13 +139,13 @@ document.getElementById('tableBody').addEventListener('click', (event) => {
 const sortNote = () => {
     const transactions = JSON.parse(localStorage.getItem('transactions'));
     console.log(transactions[0].note);
-    if(hasBeenPressed) {
-        hasBeenPressed = false;
+    if(hasBeenPressedNote) {
+        hasBeenPressedNote = false;
         transactions.sort(((a, b) => (a.note > b.note ? 1 : -1)));
         localStorage.setItem('transactions', JSON.stringify(transactions)); 
         populateTable();
     }else{
-        hasBeenPressed = true;
+        hasBeenPressedNote = true;
         transactions.sort(((a, b) => (a.note < b.note ? 1 : -1)));
         localStorage.setItem('transactions', JSON.stringify(transactions)); 
         populateTable();
@@ -151,19 +156,41 @@ const sortDate = () => {
     transactions.sort((a, b) => {
         const dateA = new Date(a.date); 
         const dateB = new Date(b.date); 
-        return hasBeenPressed ? dateB - dateA : dateA - dateB; 
+        return hasBeenPressedDate ? dateB - dateA : dateA - dateB; 
     });
     
-    // Toggle the state
-    hasBeenPressed = !hasBeenPressed;
+    hasBeenPressedDate = !hasBeenPressedDate;
         localStorage.setItem('transactions', JSON.stringify(transactions)); 
         populateTable();
     }
 
+const sortAmount = () => {
+    const transactions = JSON.parse(localStorage.getItem('transactions'));
+    transactions.sort((a, b) => {
+        const amountA = parseInt(a.amount, 10); 
+        const amountB = parseInt(b.amount, 10);
+        return hasBeenPressedAmount ? amountB - amountA : amountA - amountB;
+    });
+    
+    hasBeenPressedAmount = !hasBeenPressedAmount;
+        localStorage.setItem('transactions', JSON.stringify(transactions)); 
+        populateTable();
+    }
 
-let hasBeenPressed = false;
-const isSortNotePressed = document.getElementById('sort-note').addEventListener('click', sortNote);
-const isSortDatePressed = document.getElementById('sort-date').addEventListener('click', sortDate);
+const filterType = () => {
+    const typeFilter = document.getElementById('typeFilter').value;
+    currentTypeFilter = typeFilter; 
+    populateTable();
+}
+
+let hasBeenPressedNote = false;
+let hasBeenPressedDate = false;
+let hasBeenPressedAmount = false;
+let currentTypeFilter = '';
+document.getElementById('sort-note').addEventListener('click', sortNote);
+document.getElementById('sort-date').addEventListener('click', sortDate);
+document.getElementById('sort-amount').addEventListener('click', sortAmount);
+document.getElementById('typeFilter').addEventListener('change', filterType);
 
 // const isSortDatePressed = document.getElementById('sort-date').addEventListener('click', sortDate);
 // const isSortAmountPressed = document.getElementById('sort-amount').addEventListener('click', sortDate);
