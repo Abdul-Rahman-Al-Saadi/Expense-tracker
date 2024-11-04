@@ -130,10 +130,24 @@ th, td {
     /* border: 1px solid #ddd; */
 }
 
+.expense-row {
+    color: red;
+}
+
+.income-row {
+    color: rgb(0, 194, 0);
+}
+
 th {
     background-color: rgb(247, 161, 247);
     /* padding-right: 40px; */
     color: purple;
+}
+th img {
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+    cursor: pointer;
 }
 
 tr:nth-child(even) {

@@ -57,6 +57,12 @@ function populateTable() {
 
     transactions.forEach((transaction, index) => {
         const row = document.createElement('tr');
+        if(transaction.type == 'income'){
+            row.classList = 'income-row';
+        }
+        else{
+            row.classList = 'expense-row'
+        }
         row.innerHTML = `
             <td>${transaction.date}</td>
             <td>${transaction.note}</td>
@@ -126,6 +132,44 @@ document.getElementById('tableBody').addEventListener('click', (event) => {
         handleDelete(index);
     }
 });
+
+const sortNote = () => {
+    const transactions = JSON.parse(localStorage.getItem('transactions'));
+    console.log(transactions);
+    if(hasBeenPressed) {
+        hasBeenPressed = false;
+        transactions.sort(((a, b) => (a.note > b.note ? 1 : -1)));
+        localStorage.setItem('transactions', JSON.stringify(transactions)); 
+        populateTable();
+    }else{
+        hasBeenPressed = true;
+        transactions.sort(((a, b) => (a.note < b.note ? 1 : -1)));
+        localStorage.setItem('transactions', JSON.stringify(transactions)); 
+        populateTable();
+    }
+}
+// const sortDate = () => {
+//     const transactions = JSON.parse(localStorage.getItem('transactions'));
+//     console.log(hasBeenPressed);
+//     if(hasBeenPressed) {
+//         hasBeenPressed = false;
+//         transactions.sort((a, b) => a.date - b.date);
+//         localStorage.setItem('transactions', JSON.stringify(transactions)); 
+//         populateTable();
+//     }else{
+//         hasBeenPressed = true;
+//         transactions.sort((a, b) => b.date - a.date);
+//         localStorage.setItem('transactions', JSON.stringify(transactions)); 
+//         populateTable();
+//     }
+// }
+
+let hasBeenPressed = false;
+const isSortNotePressed = document.getElementById('sort-note').addEventListener('click', sortNote);
+
+// const isSortDatePressed = document.getElementById('sort-date').addEventListener('click', sortDate);
+// const isSortAmountPressed = document.getElementById('sort-amount').addEventListener('click', sortDate);
+// const isSortTypePressed = document.getElementById('sort-type').addEventListener('click', sortDate);
 
 populateTotals()
 populateTable();
